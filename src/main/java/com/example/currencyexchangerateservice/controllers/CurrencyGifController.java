@@ -18,11 +18,11 @@ public class CurrencyGifController {
 
     @GetMapping("/getCurrencyDiff")
     public String getDiffGif() {
-        return currencyGifService.getLatestCurrencyRates("669c38ba72304ef0a9ca018ab754cb23");
+        return currencyGifService.getLatestCurrencyRates();
     }
 
     @GetMapping("/getRichGif")
     public String getRichGif() {
-        return currencyGifService.getRichGif("V0WZW5vNmXN9cmFHl9bbEd2RrQWwZhAt");
+        return currencyGifService.getRichGif();
     }
 }
