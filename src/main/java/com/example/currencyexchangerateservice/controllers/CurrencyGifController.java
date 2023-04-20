@@ -18,7 +18,7 @@ public class CurrencyGifController {
 
     @GetMapping("/getCurrencyDiff")
     public String getDiffGif() {
-        return currencyGifService.getLatestCurrencyRates();
+        return currencyGifService.getCurrencyDifference();
     }
 
     @GetMapping("/getRichGif")
