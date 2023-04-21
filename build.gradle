@@ -19,6 +19,11 @@ ext {
 dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.json:json:20180130'
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.7.10'
+
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

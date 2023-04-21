@@ -3,6 +3,8 @@ package com.example.currencyexchangerateservice.services;
 import com.example.currencyexchangerateservice.clients.CurrencyRatesClient;
 import com.example.currencyexchangerateservice.clients.GiphyClient;
 import com.example.currencyexchangerateservice.config.AppSettings;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -30,15 +32,15 @@ public class CurrencyGifService {
         ResponseEntity<String> responseEntityCurrent = currencyRatesClient.getLatestCurrencyRates(appSettings.getCurrencyAppId());
         ResponseEntity<String> responseEntityPrevious = getPreviousCurrencyRates();
 
-        // TODO: Make difference using JSON
-        int index = responseEntityCurrent.getBody().indexOf(appSettings.getCurrency());
-        Double currentRate = Double.parseDouble(responseEntityCurrent.getBody().substring(index + 6, index + 15));
-        index = responseEntityPrevious.getBody().indexOf(appSettings.getCurrency());
-        Double previousRate = Double.parseDouble(responseEntityPrevious.getBody().substring(index + 6, index + 15));
+        JSONObject currentRates = new JSONObject(responseEntityCurrent.getBody()).getJSONObject("rates");
+        Double currentRate = currentRates.getDouble(appSettings.getCurrency());
+
+        JSONObject previousRates = new JSONObject(responseEntityPrevious.getBody()).getJSONObject("rates");
+        Double previousRate = previousRates.getDouble(appSettings.getCurrency());
 
 
 
-        return currentRate - previousRate > 0 ? "Сегодня > вчера" : "Вчера > сегодня";
+        return currentRate - previousRate >= 0 ? getGif("rich") : getGif("broke");
     }
 
     public ResponseEntity<String> getPreviousCurrencyRates() {
@@ -49,10 +51,13 @@ public class CurrencyGifService {
         return responseEntity;
     }
 
-    // TODO: Make method, which gives back to user GIF image, in relation to currency difference
-    public String getRichGif() {
-        ResponseEntity<String> responseEntity = giphyClient.getRichGif(appSettings.getGiphyApiKey());
-        return responseEntity.getBody();
+    public String getGif(String gifType) {
+        ResponseEntity<String> responseEntity = giphyClient.getRichGif(appSettings.getGiphyApiKey(), gifType);
+        JSONObject jsonObject = new JSONObject(responseEntity.getBody());
+        JSONArray jsonArray = jsonObject.getJSONArray("data");
+        String url = jsonArray.getJSONObject(0).getJSONObject("images").getJSONObject("original").getString("url");
+
+        return url;
     }
 
 
