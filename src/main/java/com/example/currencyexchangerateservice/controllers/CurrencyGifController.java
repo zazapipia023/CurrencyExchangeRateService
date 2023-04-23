@@ -20,7 +20,6 @@ public class CurrencyGifController {
     @GetMapping("/getCurrencyDiff")
     public String getDiffGif(Model model) {
         model.addAttribute("pathToGif", currencyGifService.getCurrencyDifference());
-
         return "index";
     }
 

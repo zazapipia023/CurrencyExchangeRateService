@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Random;
 
 @Service
 public class CurrencyGifService {
@@ -55,10 +56,10 @@ public class CurrencyGifService {
         ResponseEntity<String> responseEntity = giphyClient.getRichGif(appSettings.getGiphyApiKey(), gifType);
         JSONObject jsonObject = new JSONObject(responseEntity.getBody());
         JSONArray jsonArray = jsonObject.getJSONArray("data");
-        String url = jsonArray.getJSONObject(0).getJSONObject("images").getJSONObject("original").getString("url");
+        String url = jsonArray.getJSONObject((int) (Math.random() * 50))
+                .getJSONObject("images").getJSONObject("original").getString("url");
 
         return url;
     }
-
 
 }
