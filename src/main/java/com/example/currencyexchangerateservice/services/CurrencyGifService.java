@@ -39,8 +39,6 @@ public class CurrencyGifService {
         JSONObject previousRates = new JSONObject(responseEntityPrevious.getBody()).getJSONObject("rates");
         Double previousRate = previousRates.getDouble(appSettings.getCurrency());
 
-
-
         return currentRate - previousRate >= 0 ? getGif("rich") : getGif("broke");
     }
 
